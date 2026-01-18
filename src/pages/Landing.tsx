@@ -53,7 +53,7 @@ const Landing = () => {
             <div className="bg-primary p-2 rounded-xl">
               <Bot className="w-6 h-6 text-primary-foreground" />
             </div>
-            <span className="font-bold text-xl text-foreground">RAG ChatBot</span>
+            <span className="font-bold text-xl text-foreground">My Agent</span>
           </div>
           <Button onClick={() => navigate('/dashboard')} className="rounded-xl">
             대시보드 시작
@@ -64,19 +64,6 @@ const Landing = () => {
 
       {/* Main Content */}
       <main className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-8">
-        {/* Hero Text */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <Bot className="w-4 h-4" />
-            AI 기반 RAG 챗봇 대시보드
-          </div>
-          <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-3">
-            고객 문의를 <span className="text-primary">실시간</span>으로
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            AI 챗봇 대화와 분석 대시보드를 한 화면에서 관리하세요
-          </p>
-        </div>
 
         {/* Dashboard + Chat Preview */}
         <div className="grid lg:grid-cols-5 gap-4 md:gap-6">
@@ -265,7 +252,7 @@ const Landing = () => {
       <footer className="border-t border-border py-6 text-center text-muted-foreground">
         <p className="flex items-center justify-center gap-2">
           <Bot className="w-5 h-5 text-primary" />
-          <span>RAG Chatbot Dashboard</span>
+          <span>My Agent</span>
           <span className="text-muted-foreground/50">© 2026</span>
         </p>
       </footer>
