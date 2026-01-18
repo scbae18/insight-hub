@@ -9,6 +9,7 @@ import {
   Clock,
   Send
 } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -97,21 +98,37 @@ const Landing = () => {
                   <span className="text-xs bg-muted text-muted-foreground px-3 py-1 rounded-full">이번 주</span>
                 </div>
               </div>
-              <div className="flex items-end gap-2 h-32">
-                {timeData.map((data, index) => (
-                  <div key={index} className="flex-1 flex flex-col items-center gap-1">
-                    <div 
-                      className="w-full bg-primary/20 rounded-t-md relative overflow-hidden transition-all hover:bg-primary/30"
-                      style={{ height: `${(data.value / maxValue) * 100}%` }}
-                    >
-                      <div 
-                        className="absolute bottom-0 left-0 right-0 bg-primary rounded-t-md"
-                        style={{ height: '100%' }}
-                      />
-                    </div>
-                    <span className="text-xs text-muted-foreground">{data.hour}</span>
-                  </div>
-                ))}
+              <div className="h-40">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={timeData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                    <XAxis 
+                      dataKey="hour" 
+                      axisLine={false} 
+                      tickLine={false}
+                      tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false}
+                      tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px',
+                        fontSize: '12px'
+                      }}
+                      labelFormatter={(label) => `${label}시`}
+                      formatter={(value: number) => [`${value}건`, '문의']}
+                    />
+                    <Bar 
+                      dataKey="value" 
+                      fill="hsl(var(--primary))" 
+                      radius={[4, 4, 0, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             </div>
 
