@@ -1,223 +1,273 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
-  MessageSquare, 
-  BarChart3, 
-  Bell, 
-  Users, 
-  Zap, 
-  Shield,
-  ArrowRight,
   Bot,
+  ArrowRight,
+  MessageSquare,
   TrendingUp,
-  Clock
+  Users,
+  Clock,
+  Send
 } from 'lucide-react';
 
 const Landing = () => {
   const navigate = useNavigate();
 
-  const features = [
-    {
-      icon: MessageSquare,
-      title: '실시간 대화 모니터링',
-      description: '고객과의 모든 대화를 실시간으로 추적하고 관리하세요',
-    },
-    {
-      icon: BarChart3,
-      title: '스마트 분석',
-      description: '인기 질문, 통신사, 모델별 통계를 한눈에 확인하세요',
-    },
-    {
-      icon: Bell,
-      title: '미응답 알림',
-      description: '놓친 문의가 없도록 즉각적인 알림을 받으세요',
-    },
-    {
-      icon: Users,
-      title: '리드 관리',
-      description: '잠재 고객을 체계적으로 관리하고 전환율을 높이세요',
-    },
+  // Mock chat messages
+  const chatMessages = [
+    { role: 'user', content: 'SKT 번호이동 갤럭시 S24 울트라 할부원금 알려줘', time: '14:32' },
+    { role: 'assistant', content: 'SKT 번호이동으로 갤럭시 S24 울트라를 구매하시면 할부원금은 1,200,000원입니다. 256GB 모델은 1,350,000원입니다.', time: '14:32' },
+    { role: 'user', content: 'KT 기변은 얼마야?', time: '14:33' },
+    { role: 'assistant', content: 'KT 기기변경 시 갤럭시 S24 울트라 할부원금은 1,150,000원입니다. 공시지원금 적용 시 더 저렴하게 구매 가능합니다.', time: '14:33' },
   ];
 
+  // Mock dashboard stats
   const stats = [
-    { value: '99.9%', label: '응답률', icon: Zap },
-    { value: '< 3초', label: '평균 응답 시간', icon: Clock },
-    { value: '24/7', label: '무중단 운영', icon: Shield },
-    { value: '+150%', label: '문의 처리량 증가', icon: TrendingUp },
+    { label: '오늘 문의', value: '127', change: '+23%', icon: MessageSquare },
+    { label: '평균 응답', value: '2.3초', change: '-15%', icon: Clock },
+    { label: '활성 리드', value: '48', change: '+12%', icon: Users },
+    { label: '전환율', value: '34%', change: '+8%', icon: TrendingUp },
   ];
+
+  // Mock time distribution data
+  const timeData = [
+    { hour: '09', value: 15 },
+    { hour: '10', value: 25 },
+    { hour: '11', value: 45 },
+    { hour: '12', value: 30 },
+    { hour: '13', value: 20 },
+    { hour: '14', value: 55 },
+    { hour: '15', value: 70 },
+    { hour: '16', value: 60 },
+    { hour: '17', value: 40 },
+  ];
+
+  const maxValue = Math.max(...timeData.map(d => d.value));
 
   return (
-    <div className="min-h-screen bg-background overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4">
-        {/* Background Decorations */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-primary/15 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl" />
-        </div>
-
-        {/* Grid Pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(to right, hsl(var(--primary)) 1px, transparent 1px)`,
-            backgroundSize: '60px 60px'
-          }}
-        />
-
-        <div className="relative z-10 text-center max-w-5xl mx-auto">
-          {/* Logo/Icon */}
-          <div className="mb-8 flex justify-center">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 rounded-3xl blur-xl scale-150" />
-              <div className="relative bg-gradient-to-br from-primary to-primary/80 p-6 rounded-3xl shadow-2xl">
-                <Bot className="w-16 h-16 text-primary-foreground" />
-              </div>
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
+      <header className="border-b border-border bg-card/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-primary p-2 rounded-xl">
+              <Bot className="w-6 h-6 text-primary-foreground" />
             </div>
+            <span className="font-bold text-xl text-foreground">RAG ChatBot</span>
           </div>
+          <Button onClick={() => navigate('/dashboard')} className="rounded-xl">
+            대시보드 시작
+            <ArrowRight className="ml-2 w-4 h-4" />
+          </Button>
+        </div>
+      </header>
 
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-full text-sm font-medium mb-6 border border-primary/20">
-            <Zap className="w-4 h-4" />
-            AI 기반 RAG 챗봇 솔루션
+      {/* Main Content */}
+      <main className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-8">
+        {/* Hero Text */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-full text-sm font-medium mb-4">
+            <Bot className="w-4 h-4" />
+            AI 기반 RAG 챗봇 대시보드
           </div>
-
-          {/* Main Title */}
-          <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight">
-            고객 문의를
-            <br />
-            <span className="text-primary">스마트하게</span> 관리하세요
+          <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-3">
+            고객 문의를 <span className="text-primary">실시간</span>으로
           </h1>
-
-          {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-            RAG 기술로 구동되는 AI 챗봇과 
-            <br className="hidden md:block" />
-            직관적인 대시보드로 고객 경험을 혁신하세요
+          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+            AI 챗봇 대화와 분석 대시보드를 한 화면에서 관리하세요
           </p>
+        </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="text-lg px-8 py-6 rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all"
-              onClick={() => navigate('/dashboard')}
-            >
-              대시보드 시작하기
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="text-lg px-8 py-6 rounded-xl border-2"
-              onClick={() => navigate('/analytics')}
-            >
-              분석 보기
-            </Button>
-          </div>
-
-          {/* Stats Preview */}
-          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-            {stats.map((stat, index) => (
-              <div 
-                key={index}
-                className="bg-card/80 backdrop-blur-sm border border-border/50 rounded-2xl p-6 shadow-card hover:shadow-card-hover transition-all"
-              >
-                <stat.icon className="w-8 h-8 text-primary mx-auto mb-3" />
-                <div className="text-3xl md:text-4xl font-bold text-foreground mb-1">
-                  {stat.value}
+        {/* Dashboard + Chat Preview */}
+        <div className="grid lg:grid-cols-5 gap-4 md:gap-6">
+          {/* Dashboard Side (Left - 3 cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {stats.map((stat, index) => (
+                <div 
+                  key={index}
+                  className="bg-card border border-border rounded-xl p-4 hover:shadow-lg hover:border-primary/30 transition-all"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <stat.icon className="w-5 h-5 text-primary" />
+                    <span className={`text-xs font-medium ${stat.change.startsWith('+') ? 'text-emerald-500' : 'text-primary'}`}>
+                      {stat.change}
+                    </span>
+                  </div>
+                  <div className="text-2xl font-bold text-foreground">{stat.value}</div>
+                  <div className="text-xs text-muted-foreground">{stat.label}</div>
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  {stat.label}
+              ))}
+            </div>
+
+            {/* Chart Area */}
+            <div className="bg-card border border-border rounded-xl p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-foreground">시간대별 문의량</h3>
+                <div className="flex gap-2">
+                  <span className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full font-medium">오늘</span>
+                  <span className="text-xs bg-muted text-muted-foreground px-3 py-1 rounded-full">이번 주</span>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex justify-center">
-            <div className="w-1.5 h-3 bg-muted-foreground/50 rounded-full mt-2 animate-pulse" />
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-24 px-4 bg-secondary/30">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
-              강력한 기능
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              고객 문의 관리에 필요한 모든 도구를 한 곳에서
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="group bg-card border border-border rounded-2xl p-8 hover:shadow-xl hover:border-primary/30 transition-all duration-300 cursor-pointer"
-              >
-                <div className="flex items-start gap-5">
-                  <div className="flex-shrink-0 w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                    <feature.icon className="w-7 h-7 text-primary group-hover:text-primary-foreground transition-colors" />
+              <div className="flex items-end gap-2 h-32">
+                {timeData.map((data, index) => (
+                  <div key={index} className="flex-1 flex flex-col items-center gap-1">
+                    <div 
+                      className="w-full bg-primary/20 rounded-t-md relative overflow-hidden transition-all hover:bg-primary/30"
+                      style={{ height: `${(data.value / maxValue) * 100}%` }}
+                    >
+                      <div 
+                        className="absolute bottom-0 left-0 right-0 bg-primary rounded-t-md"
+                        style={{ height: '100%' }}
+                      />
+                    </div>
+                    <span className="text-xs text-muted-foreground">{data.hour}</span>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-foreground mb-2">
-                      {feature.title}
-                    </h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {feature.description}
-                    </p>
+                ))}
+              </div>
+            </div>
+
+            {/* Leads Preview */}
+            <div className="bg-card border border-border rounded-xl p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-foreground">최근 리드</h3>
+                <span className="text-xs text-primary cursor-pointer hover:underline">전체 보기</span>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { id: 'user_A3K9', question: 'SKT 번호이동 갤럭시 S24 울트라', status: '완료', time: '2분 전' },
+                  { id: 'user_B7X2', question: 'KT 기변 아이폰 15 프로 가격', status: '대기', time: '5분 전' },
+                  { id: 'user_C1M5', question: 'LGU+ 갤럭시 Z 플립 5 할부', status: '완료', time: '8분 전' },
+                ].map((lead, index) => (
+                  <div key={index} className="flex items-center gap-3 p-3 bg-secondary/50 rounded-lg hover:bg-secondary transition-colors">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Users className="w-4 h-4 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium text-foreground">{lead.id}</span>
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                          lead.status === '완료' 
+                            ? 'bg-primary/10 text-primary' 
+                            : 'bg-warning/10 text-warning'
+                        }`}>
+                          {lead.status}
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground truncate">{lead.question}</p>
+                    </div>
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">{lead.time}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Chat Side (Right - 2 cols) */}
+          <div className="lg:col-span-2">
+            <div className="bg-card border border-border rounded-xl overflow-hidden h-full flex flex-col shadow-xl">
+              {/* Chat Header */}
+              <div className="bg-primary p-4 flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary-foreground/20 rounded-full flex items-center justify-center">
+                  <Bot className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-primary-foreground">AI 상담 챗봇</h3>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                    <span className="text-xs text-primary-foreground/80">온라인</span>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-24 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-3xl blur-2xl" />
-            <div className="relative bg-card border border-border rounded-3xl p-12 md:p-16">
-              <Bot className="w-16 h-16 text-primary mx-auto mb-6" />
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                지금 바로 시작하세요
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-                AI 챗봇 대시보드로 고객 응대 효율을 극대화하세요
-              </p>
-              <Button 
-                size="lg" 
-                className="text-lg px-10 py-6 rounded-xl shadow-lg shadow-primary/25"
-                onClick={() => navigate('/dashboard')}
-              >
-                대시보드로 이동
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
+              {/* Chat Messages */}
+              <div className="flex-1 p-4 space-y-4 bg-secondary/30 overflow-y-auto min-h-[400px]">
+                {chatMessages.map((msg, index) => (
+                  <div 
+                    key={index}
+                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div className={`max-w-[85%] ${msg.role === 'user' ? 'order-2' : ''}`}>
+                      {msg.role === 'assistant' && (
+                        <div className="flex items-center gap-2 mb-1">
+                          <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                            <Bot className="w-4 h-4 text-primary-foreground" />
+                          </div>
+                          <span className="text-xs text-muted-foreground">AI 상담사</span>
+                        </div>
+                      )}
+                      <div 
+                        className={`p-3 rounded-2xl ${
+                          msg.role === 'user' 
+                            ? 'bg-primary text-primary-foreground rounded-br-md' 
+                            : 'bg-card border border-border text-foreground rounded-bl-md'
+                        }`}
+                      >
+                        <p className="text-sm leading-relaxed">{msg.content}</p>
+                      </div>
+                      <span className={`text-xs text-muted-foreground mt-1 block ${msg.role === 'user' ? 'text-right' : ''}`}>
+                        {msg.time}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Typing Indicator */}
+                <div className="flex justify-start">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                      <Bot className="w-4 h-4 text-primary-foreground" />
+                    </div>
+                    <div className="bg-card border border-border p-3 rounded-2xl rounded-bl-md">
+                      <div className="flex gap-1">
+                        <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Chat Input */}
+              <div className="p-4 border-t border-border bg-card">
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="text"
+                    placeholder="메시지를 입력하세요..."
+                    className="flex-1 bg-secondary/50 border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    readOnly
+                  />
+                  <Button size="icon" className="rounded-xl h-11 w-11">
+                    <Send className="w-5 h-5" />
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </section>
+
+        {/* CTA */}
+        <div className="text-center mt-8">
+          <Button 
+            size="lg" 
+            className="rounded-xl px-8 py-6 text-lg shadow-lg shadow-primary/25"
+            onClick={() => navigate('/dashboard')}
+          >
+            대시보드 시작하기
+            <ArrowRight className="ml-2 w-5 h-5" />
+          </Button>
+        </div>
+      </main>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-border">
-        <div className="max-w-6xl mx-auto text-center text-muted-foreground">
-          <p className="flex items-center justify-center gap-2">
-            <Bot className="w-5 h-5 text-primary" />
-            <span className="font-medium">RAG Chatbot Dashboard</span>
-          </p>
-          <p className="text-sm mt-2">
-            © 2026 All rights reserved.
-          </p>
-        </div>
+      <footer className="border-t border-border py-6 text-center text-muted-foreground">
+        <p className="flex items-center justify-center gap-2">
+          <Bot className="w-5 h-5 text-primary" />
+          <span>RAG Chatbot Dashboard</span>
+          <span className="text-muted-foreground/50">© 2026</span>
+        </p>
       </footer>
     </div>
   );
